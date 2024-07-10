@@ -1,14 +1,52 @@
-import { MapPin, Calendar, ArrowRight, UserRoundPlus, Settings2 } from 'lucide-react'
-import { useState } from 'react'
+import { MapPin, Calendar, ArrowRight, UserRoundPlus, Settings2, X, AtSign, Plus } from 'lucide-react'
+import { FormEvent, useState } from 'react'
 
 export function App() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [emailsToInvite, setEmailsToInvite] = useState([
+    'lucasdev2002@.com.br',
+    'jhonSnow@.com.br',
+  ])
+
   function OpenGestInput() {
     setIsOpen(true)
   }
   function CloseGestInput() {
     setIsOpen(false)
   }
+  function opengestIsModal() {
+    setIsModalOpen(true)
+  }
+  function CloseGestModal() {
+    setIsModalOpen(false)
+  }
+  function AddNweEmalToInvite(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const data = new FormData(event.currentTarget)
+    const email = data.get('email')?.toString()
+
+    if (!email) {
+      return
+    }
+    if (emailsToInvite.includes(email)) {
+      return
+    }
+
+    setEmailsToInvite([...emailsToInvite, email])
+
+
+    event.currentTarget.reset()
+  }
+
+  function removeEmailfromInvites(emailToRemove: string) {
+    const newEmailList = emailsToInvite.filter(email => email != emailToRemove)
+
+    setEmailsToInvite(newEmailList)
+  }
+
+
 
   return (
     <div className="h-screen flex items-center justify-center bg-pattern bg-no-repeat bg-center">
@@ -55,12 +93,12 @@ export function App() {
 
           {isOpen && (
             <div className="h-16 bg-zinc-900 px-4 rounded-xl flex items-center shadow-shape gap-3">
-              <div className='flex items-center gap-2 flex-1'>
+              <button type='button' onClick={opengestIsModal} className='flex items-center gap-2 flex-1 text-left'>
                 <UserRoundPlus className='size-5 text-zinc-400' />
-                <input
-                  placeholder="Quem Estará na Viagem?"
-                  className="bg-transparent text-lg placeholder-zinc-400 outline-none " />
-              </div>
+                <span className="bg-transparent text-zinc-400 text-lg flex-1">
+                  Quem Estará na Viagem?
+                </span>
+              </button>
 
               <div className='w-px h-6 bg-zinc-800' />
 
@@ -70,7 +108,6 @@ export function App() {
               </button>
             </div>
           )}
-
         </div>
 
         <p className="text-sm text-zinc-500">
@@ -80,6 +117,46 @@ export function App() {
           <a href="#" className="text-zinc-300 underline">politica de privacidade</a>
         </p>
       </div>
+
+      {isModalOpen && (
+        <div className='fixed inset-0 bg-black/60 flex items-center justify-center'>
+          <div className='w-[748px] rounded-xl py-10 px-5 shadow-shape bg-zinc-900 space-y-5'>
+            <div className='space-y-2'>
+              <div className='flex items-center justify-between'>
+                <h2 className='text-lg font-semibold'>Selecionar Convidados</h2>
+                <X onClick={CloseGestModal} className='size-5 text-zinc-400 cursor-pointer' />
+              </div>
+              <p className='text-sm text-zinc-400'>os convidados irão receber e-mails  para confirmar na viagem</p>
+            </div>
+            <div className='flex flex-wrap gap-2'>
+              {emailsToInvite.map(email => {
+                return (
+                  <div key={email} className='py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2'>
+                    <span className='text-zinc-300'>{email}</span>
+                    <button type='button' onClick={() => removeEmailfromInvites(email)}>
+                      <X className='size-4 text-zinc-400' />
+                    </button>
+                  </div>
+                )
+              })}
+            </div>
+            <div className='w-full h-10 bg-zinc-800'>
+              <form onSubmit={AddNweEmalToInvite} className='p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2'>
+                <AtSign className='text-zinc-400 size-4' />
+                <input
+                  type='email'
+                  name='email'
+                  placeholder="Digite o e-mail do Convidado?"
+                  className="bg-transparent text-lg placeholder-zinc-400 w-full  outline-none flex-1" />
+                <button type='submit' className='bg-lime-300 text-lime-950 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-lime-400'>
+                  Convidar
+                  <Plus className='size-5' />
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
