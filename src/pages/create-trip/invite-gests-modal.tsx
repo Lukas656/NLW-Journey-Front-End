@@ -1,5 +1,6 @@
 import { AtSign, Plus, X } from "lucide-react"
 import { FormEvent } from "react"
+import { Button } from "../../components/button"
 
 interface InviteGestsModalProps {
     closeGestModal: () => void,
@@ -18,7 +19,7 @@ export function InviteGestsModal(props: InviteGestsModalProps) {
                         <h2 className='text-lg font-semibold'>Selecionar Convidados</h2>
                         <X onClick={props.closeGestModal} className='size-5 text-zinc-400 cursor-pointer' />
                     </div>
-                    <p className='text-sm text-zinc-400'>os convidados irão receber e-mails  para confirmar na viagem</p>
+                    <p className='text-sm text-zinc-400 '>os convidados irão receber e-mails  para confirmar na viagem</p>
                 </div>
                 <div className='flex flex-wrap gap-2'>
                     {props.emailsToInvite.map(email => {
@@ -40,10 +41,12 @@ export function InviteGestsModal(props: InviteGestsModalProps) {
                             name='email'
                             placeholder="Digite o e-mail do Convidado?"
                             className="bg-transparent text-lg placeholder-zinc-400 w-full  outline-none flex-1" />
-                        <button type='submit' className='bg-lime-300 text-lime-950 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-lime-400'>
+
+                        <Button tyButton="primary" type="submit">
                             Convidar
                             <Plus className='size-5' />
-                        </button>
+                        </Button>
+
                     </form>
                 </div>
             </div>
