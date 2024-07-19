@@ -1,10 +1,10 @@
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { CreateActivityModal } from "../../components/modal/create-activity-modal";
-import { ImportntLinks } from "../create-trip/important-links";
-import { Guests } from "../create-trip/guests";
-import { Activities } from "../create-trip/activities";
-import { DestinationAnddateHeader } from "../create-trip/destination-and-date-header";
+import { ImportntLinks } from "../../components/important-links";
+import { Guests } from "../../components/guests";
+import { Activities } from "../../components/activities";
+import { DestinationAnddateHeader } from "../../components/destination-and-date-header";
 
 export function TripDetailsPage() {
     const [isCreateactivityModalOpen, setIsCreateActivityModalOpen] = useState(false);
@@ -44,7 +44,7 @@ export function TripDetailsPage() {
             {isCreateactivityModalOpen && (
                 <CreateActivityModal createActivityModal={toggleCreateActivityModal} />
             )}
-            
+
         </div>
     )
 }
